@@ -1,0 +1,5 @@
+## Interface: 70300
+## Title: ShamanHelper
+## Notes: A shaman helper addon
+
+ShamanHelper.lua
