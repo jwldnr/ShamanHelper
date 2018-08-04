@@ -1,5 +1,6 @@
 ## Interface: 80000
 ## Title: ShamanHelper
 ## Notes: A shaman helper addon
+## Version: 1.0
 
 ShamanHelper.lua
