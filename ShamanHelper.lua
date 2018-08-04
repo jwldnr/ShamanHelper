@@ -3,7 +3,7 @@ local AddonName, Addon = ...
 local UNIT_PLAYER = "player"
 local TIDAL_WAVES = "Tidal Waves"
 local TIDEBRINGER = "Tidebringer"
-local JONATS_FOCUS = "Jonat's Focus"
+local EARTH_SHIELD = "Earth Shield"
 
 local UPDATE_INTERVAL = .5
 local OOC_UPDATE_INTERVAL = 2
@@ -104,31 +104,31 @@ function Addon:SetupFrames()
 
   -- test 2
 
-  local jonatsFocus = CreateFrame("Frame", nil)
-  jonatsFocus:SetPoint("TOP", tidebringer, "BOTTOM")
+  local earthShield = CreateFrame("Frame", nil)
+  earthShield:SetPoint("TOP", tidebringer, "BOTTOM")
 
-  jonatsFocus:Hide()
+  earthShield:Hide()
 
-  local jonatsFocusName = jonatsFocus:CreateFontString(nil, "ARTWORK")
-  jonatsFocusName:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
-  jonatsFocusName:SetVertexColor(1, 1, .5)
-  jonatsFocusName:SetPoint("LEFT", jonatsFocus, "LEFT")
+  local earthShieldName = earthShield:CreateFontString(nil, "ARTWORK")
+  earthShieldName:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
+  earthShieldName:SetVertexColor(1, 1, .5)
+  earthShieldName:SetPoint("LEFT", earthShield, "LEFT")
 
-  jonatsFocusName:SetText("jonat's focus: ")
+  earthShieldName:SetText("earth shield: ")
 
-  local jonatsFocusCount = jonatsFocus:CreateFontString(nil, "ARTWORK")
-  jonatsFocusCount:SetFont("Fonts\\FRIZQT__.TTF", 24, "OUTLINE")
-  jonatsFocusCount:SetVertexColor(.5, 1, .5)
-  jonatsFocusCount:SetPoint("LEFT", jonatsFocusName, "RIGHT")
+  local earthShieldCount = earthShield:CreateFontString(nil, "ARTWORK")
+  earthShieldCount:SetFont("Fonts\\FRIZQT__.TTF", 24, "OUTLINE")
+  earthShieldCount:SetVertexColor(.5, 1, .5)
+  earthShieldCount:SetPoint("LEFT", earthShieldName, "RIGHT")
 
   -- -- debug
-  -- jonatsFocusCount:SetText("5")
+  -- earthShieldCount:SetText("5")
 
-  self.jonatsFocus = jonatsFocus
-  self.jonatsFocusName = jonatsFocusName
-  self.jonatsFocusCount = jonatsFocusCount
+  self.earthShield = earthShield
+  self.earthShieldName = earthShieldName
+  self.earthShieldCount = earthShieldCount
 
-  self:ResizeJonatsFocus()
+  self:ResizeEarthShield()
 end
 
 function Addon:ResizeTidalWaves()
@@ -141,9 +141,9 @@ function Addon:ResizeTidebringer()
   self.tidebringer:SetHeight(self.tidebringerName:GetStringHeight() + self.tidebringerCount:GetStringHeight())
 end
 
-function Addon:ResizeJonatsFocus()
-  self.jonatsFocus:SetWidth(self.jonatsFocusName:GetStringWidth() + self.jonatsFocusCount:GetStringWidth())
-  self.jonatsFocus:SetHeight(self.jonatsFocusName:GetStringHeight() + self.jonatsFocusCount:GetStringHeight())
+function Addon:ResizeEarthShield()
+  self.earthShield:SetWidth(self.earthShieldName:GetStringWidth() + self.earthShieldCount:GetStringWidth())
+  self.earthShield:SetHeight(self.earthShieldName:GetStringHeight() + self.earthShieldCount:GetStringHeight())
 end
 
 function Addon:HandleTidalWaves(count, expirationTime)
@@ -189,24 +189,24 @@ function Addon:HandleTidebringer(count)
   self.handlingTidebringer = true
 end
 
-function Addon:HandleJonatsFocus(count)
-  self:SetCount(self.jonatsFocusCount, count)
+function Addon:HandleEarthShield(count)
+  self:SetCount(self.earthShieldCount, count)
 
-  if self.handlingJonatsFocus then
+  if self.handlingEarthShield then
     return
   end
 
-  self.jonatsFocus:SetScript("OnUpdate", function(frame, elapsed)
-    Addon:OnUpdateJonatsFocus(elapsed)
+  self.earthShield:SetScript("OnUpdate", function(frame, elapsed)
+    Addon:OnUpdateearthShield(elapsed)
   end)
 
-  if not self.jonatsFocus:IsVisible() then
-    self.jonatsFocus:Show()
+  if not self.earthShield:IsVisible() then
+    self.earthShield:Show()
   end
 
-  self:ResizeJonatsFocus()
+  self:ResizeEarthShield()
 
-  self.handlingjonatsFocus = true
+  self.handlingEarthShield = true
 end
 
 function Addon:DisableTidalWaves()
@@ -279,39 +279,39 @@ function Addon:OnUpdateTidebringer(elapsed)
   self.lastTidebringerUpdate = 0
 end
 
-function Addon:DisableJonatsFocus()
-  self.jonatsFocus:SetScript("OnUpdate", nil)
+function Addon:DisableEarthShield()
+  self.earthShield:SetScript("OnUpdate", nil)
 
-  if self.jonatsFocus:IsVisible() then
-    self.jonatsFocus:Hide()
+  if self.earthShield:IsVisible() then
+    self.earthShield:Hide()
   end
 
-  self:SetCount(self.jonatsFocusCount, 0)
+  self:SetCount(self.earthShieldCount, 0)
 
-  self.lastJonatsFocusUpdate = 0
+  self.lastEarthShieldUpdate = 0
 
-  self.handlingJonatsFocus = false
+  self.handlingEarthShield = false
 end
 
-function Addon:OnUpdateJonatsFocus(elapsed)
-  self.lastJonatsFocusUpdate = self.lastJonatsFocusUpdate + elapsed
+function Addon:OnUpdateearthShield(elapsed)
+  self.lastEarthShieldUpdate = self.lastEarthShieldUpdate + elapsed
 
-  if self.lastJonatsFocusUpdate < UPDATE_INTERVAL then
+  if self.lastEarthShieldUpdate < UPDATE_INTERVAL then
     return
   end
 
-  if not UnitAffectingCombat(UNIT_PLAYER) and self.lastJonatsFocusUpdate < OOC_UPDATE_INTERVAL then
+  if not UnitAffectingCombat(UNIT_PLAYER) and self.lastEarthShieldUpdate < OOC_UPDATE_INTERVAL then
     return
   end
 
-  local buff, _, count = AuraUtil.FindAuraByName(JONATS_FOCUS, UNIT_PLAYER)
+  local buff, _, count = AuraUtil.FindAuraByName(EARTH_SHIELD, UNIT_PLAYER)
   if not buff then
-    return self:DisableJonatsFocus()
+    return self:DisableEarthShield()
   end
 
-  self:SetCount(self.jonatsFocusCount, count)
+  self:SetCount(self.earthShieldCount, count)
 
-  self.lastJonatsFocusUpdate = 0
+  self.lastEarthShieldUpdate = 0
 end
 
 function Addon:UNIT_AURA(unit)
@@ -327,6 +327,11 @@ function Addon:UNIT_AURA(unit)
   local tidebringer, _, tidebringerCount, _, _, tidebringerExpirationTime = AuraUtil.FindAuraByName(TIDEBRINGER, UNIT_PLAYER)
   if (tidebringer) then
     self:HandleTidebringer(tidebringerCount)
+  end
+
+  local earthShield, _, earthShieldCount, _, _, earthShieldExpirationTime = AuraUtil.FindAuraByName(EARTH_SHIELD, UNIT_PLAYER)
+  if (earthShield) then
+    self:HandleEarthShield(earthShieldCount)
   end
 end
 
@@ -357,8 +362,8 @@ do
     self.handlingTidebringer = false
     self.lastTidebringerUpdate = 0
 
-    self.handlingJonatsFocus = false
-    self.lastJonatsFocusUpdate = 0
+    self.handlingEarthShield = false
+    self.lastEarthShieldUpdate = 0
   end
 end
 
