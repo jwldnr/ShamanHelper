@@ -8,6 +8,8 @@ local JONATS_FOCUS = "Jonat's Focus"
 local UPDATE_INTERVAL = .5
 local OOC_UPDATE_INTERVAL = 2
 
+local AuraUtil = AuraUtil
+
 function Addon:ADDON_LOADED(name)
   if name ~= AddonName then
     return
@@ -229,7 +231,7 @@ function Addon:OnUpdateTidalWaves(elapsed)
     return
   end
 
-  local buff, _, _, count, _, _, expirationTime = UnitBuff(UNIT_PLAYER, TIDAL_WAVES)
+  local buff, _, count, _, _, expirationTime = AuraUtil.FindAuraByName(TIDAL_WAVES, UNIT_PLAYER)
   if not buff then
     return self:DisableTidalWaves()
   end
@@ -267,7 +269,7 @@ function Addon:OnUpdateTidebringer(elapsed)
     return
   end
 
-  local buff, _, _, count = UnitBuff(UNIT_PLAYER, TIDEBRINGER)
+  local buff, _, count = AuraUtil.FindAuraByName(TIDEBRINGER, UNIT_PLAYER)
   if not buff then
     return self:DisableTidebringer()
   end
@@ -302,7 +304,7 @@ function Addon:OnUpdateJonatsFocus(elapsed)
     return
   end
 
-  local buff, _, _, count = UnitBuff(UNIT_PLAYER, JONATS_FOCUS)
+  local buff, _, count = AuraUtil.FindAuraByName(JONATS_FOCUS, UNIT_PLAYER)
   if not buff then
     return self:DisableJonatsFocus()
   end
@@ -317,19 +319,14 @@ function Addon:UNIT_AURA(unit)
     return
   end
 
-  local tidalWaves, _, _, tidalWavesCount, _, _, tidalWavesExpirationTime = UnitBuff(UNIT_PLAYER, TIDAL_WAVES)
+  local tidalWaves, _, tidalWavesCount, _, _, tidalWavesExpirationTime = AuraUtil.FindAuraByName(TIDAL_WAVES, UNIT_PLAYER)
   if (tidalWaves) then
     self:HandleTidalWaves(tidalWavesCount, tidalWavesExpirationTime)
   end
 
-  local tidebringer, _, _, tidebringerCount = UnitBuff(UNIT_PLAYER, TIDEBRINGER)
+  local tidebringer, _, tidebringerCount, _, _, tidebringerExpirationTime = AuraUtil.FindAuraByName(TIDEBRINGER, UNIT_PLAYER)
   if (tidebringer) then
     self:HandleTidebringer(tidebringerCount)
-  end
-
-  local jonatsFocus, _, _, jonatsFocusCount = UnitBuff(UNIT_PLAYER, JONATS_FOCUS)
-  if (jonatsFocus) then
-    self:HandleJonatsFocus(jonatsFocusCount)
   end
 end
 
